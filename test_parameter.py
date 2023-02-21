@@ -11,6 +11,8 @@ gifs_path = f'results/{FOLDER_NAME}/gifs'
 trajectory_path = f'results/trajectory'
 length_path = f'results/length'
 
+NUM_TEST = 100
+NUM_RUN = 1
 SAVE_GIFS = False  # do you want to save GIFs
 SAVE_TRAJECTORY = False  # do you want to save per-step metrics
 SAVE_LENGTH = False  # do you want to save per-episode metrics

@@ -7,9 +7,6 @@ from model import PolicyNet
 from test_worker import TestWorker
 from test_parameter import *
 
-NUM_TEST = 100
-NUM_RUN = 1
-
 
 def run_test():
     if not os.path.exists(trajectory_path):
