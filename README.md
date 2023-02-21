@@ -37,18 +37,12 @@
 
 ### Demo of ARiADNE
 
-<figure>
-    <center>
-    <tr>
-    <img src="gifs/demo_1.gif" width=180>
-    <img src="gifs/demo_2.gif" width=180>
-    </tr>
-    <br></br>
-    <tr>
-    <img src="gifs/demo_3.gif" width=180>
-    <img src="gifs/demo_4.gif" width=180>
-    </tr>
-</figure>
+
+
+<div>
+   <img src="gifs/demo_1.gif" width="360"/><img src="gifs/demo_2.gif" width="360"/>
+   <img src="gifs/demo_3.gif" width="360"/><img src="gifs/demo_4.gif" width="360"/>
+</div>
 
 ### Cite
 If you find our work helpful or enlightening, feel free to cite our paper:
