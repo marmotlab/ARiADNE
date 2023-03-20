@@ -44,7 +44,7 @@ class Node():
                     self.observable_frontiers.append(point)
 
         self.utility = self.get_node_utility()
-        if self.utility < 5:
+        if self.utility <= 2:
             self.utility = 0
         if self.utility == 0:
             self.zero_utility_node = True
