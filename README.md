@@ -47,12 +47,15 @@
 ### Cite
 If you find our work helpful or enlightening, feel free to cite our paper:
 ```
-@article{cao2023ariadne,
-  title={Ariadne: A reinforcement learning approach using attention-based deep networks for exploration},
+@INPROCEEDINGS{cao2023ariadne,
   author={Cao, Yuhong and Hou, Tianxiang and Wang, Yizhuo and Yi, Xian and Sartoretti, Guillaume},
-  journal={arXiv preprint arXiv:2301.11575},
-  year={2023}
-}
+  booktitle={2023 IEEE International Conference on Robotics and Automation (ICRA)}, 
+  title={ARiADNE: A Reinforcement learning approach using Attention-based Deep Networks for Exploration}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={10219-10225},
+  doi={10.1109/ICRA48891.2023.10160565}}
 ```
 
 ### Authors
