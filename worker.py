@@ -114,9 +114,9 @@ class Worker:
         self.episode_buffer[0] += copy.deepcopy(node_inputs)
         self.episode_buffer[1] += copy.deepcopy(edge_inputs)
         self.episode_buffer[2] += copy.deepcopy(current_index)
-        self.episode_buffer[3] += copy.deepcopy(node_padding_mask)
-        self.episode_buffer[4] += copy.deepcopy(edge_padding_mask)
-        self.episode_buffer[5] += copy.deepcopy(edge_mask)
+        self.episode_buffer[3] += copy.deepcopy(node_padding_mask).bool()
+        self.episode_buffer[4] += copy.deepcopy(edge_padding_mask).bool()
+        self.episode_buffer[5] += copy.deepcopy(edge_mask).bool()
 
     def save_action(self, action_index):
         self.episode_buffer[6] += action_index.unsqueeze(0).unsqueeze(0)
@@ -130,9 +130,9 @@ class Worker:
         self.episode_buffer[9] += copy.deepcopy(node_inputs)
         self.episode_buffer[10] += copy.deepcopy(edge_inputs)
         self.episode_buffer[11] += copy.deepcopy(current_index)
-        self.episode_buffer[12] += copy.deepcopy(node_padding_mask)
-        self.episode_buffer[13] += copy.deepcopy(edge_padding_mask)
-        self.episode_buffer[14] += copy.deepcopy(edge_mask)
+        self.episode_buffer[12] += copy.deepcopy(node_padding_mask).bool()
+        self.episode_buffer[13] += copy.deepcopy(edge_padding_mask).bool()
+        self.episode_buffer[14] += copy.deepcopy(edge_mask).bool()
 
     def run_episode(self, curr_episode):
         done = False
