@@ -209,6 +209,11 @@ def main():
                     logp = dp_policy(node_inputs_batch, edge_inputs_batch, current_inputs_batch, node_padding_mask_batch, edge_padding_mask_batch, edge_mask_batch)
                     policy_loss = torch.sum((logp.exp().unsqueeze(2) * (log_alpha.exp().detach() * logp.unsqueeze(2) - q_values.detach())), dim=1).mean()
 
+                    global_policy_optimizer.zero_grad()
+                    policy_loss.backward()
+                    policy_grad_norm = torch.nn.utils.clip_grad_norm_(global_policy_net.parameters(), max_norm=100, norm_type=2)
+                    global_policy_optimizer.step()
+                    
                     with torch.no_grad():
                         next_logp = dp_policy(next_node_inputs_batch, next_edge_inputs_batch, next_current_inputs_batch, next_node_padding_mask_batch, next_edge_padding_mask_batch, next_edge_mask_batch)
                         next_q_values1, _ = dp_target_q_net1(next_node_inputs_batch, next_edge_inputs_batch, next_current_inputs_batch, next_node_padding_mask_batch, next_edge_padding_mask_batch, next_edge_mask_batch)
@@ -216,24 +221,20 @@ def main():
                         next_q_values = torch.min(next_q_values1, next_q_values2)
                         value_prime_batch = torch.sum(next_logp.unsqueeze(2).exp() * (next_q_values - log_alpha.exp() * next_logp.unsqueeze(2)), dim=1).unsqueeze(1)
                         target_q_batch = reward_batch + GAMMA * (1 - done_batch) * value_prime_batch
-
-                    q_values1, _ = dp_q_net1(node_inputs_batch, edge_inputs_batch, current_inputs_batch, node_padding_mask_batch, edge_padding_mask_batch, edge_mask_batch)
-                    q_values2, _ = dp_q_net2(node_inputs_batch, edge_inputs_batch, current_inputs_batch, node_padding_mask_batch, edge_padding_mask_batch, edge_mask_batch)
-                    q1 = torch.gather(q_values1, 1, action_batch)
-                    q2 = torch.gather(q_values2, 1, action_batch)
+                    
                     mse_loss = nn.MSELoss()
+                    q_values1, _ = dp_q_net1(node_inputs_batch, edge_inputs_batch, current_inputs_batch, node_padding_mask_batch, edge_padding_mask_batch, edge_mask_batch)
+                    q1 = torch.gather(q_values1, 1, action_batch)
                     q1_loss = mse_loss(q1, target_q_batch.detach()).mean()
-                    q2_loss = mse_loss(q2, target_q_batch.detach()).mean()
-
-                    global_policy_optimizer.zero_grad()
-                    policy_loss.backward()
-                    policy_grad_norm = torch.nn.utils.clip_grad_norm_(global_policy_net.parameters(), max_norm=100, norm_type=2)
-                    global_policy_optimizer.step()
 
                     global_q_net1_optimizer.zero_grad()
                     q1_loss.backward()
                     q_grad_norm = torch.nn.utils.clip_grad_norm_(global_q_net1.parameters(), max_norm=20000, norm_type=2)
                     global_q_net1_optimizer.step()
+                    
+                    q_values2, _ = dp_q_net2(node_inputs_batch, edge_inputs_batch, current_inputs_batch, node_padding_mask_batch, edge_padding_mask_batch, edge_mask_batch)
+                    q2 = torch.gather(q_values2, 1, action_batch)
+                    q2_loss = mse_loss(q2, target_q_batch.detach()).mean()
 
                     global_q_net2_optimizer.zero_grad()
                     q2_loss.backward()
